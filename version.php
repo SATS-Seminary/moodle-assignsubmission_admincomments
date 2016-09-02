@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This file contains the version information for the gradereviews submission plugin
+ * This file contains the version information for the admincomments submission plugin
  *
- * @package    assignsubmission_gradereviews
+ * @package    assignsubmission_admincomments
  * @copyright 2012 NetSpot {@link http://www.netspot.com.au}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -26,6 +26,6 @@ defined('MOODLE_INTERNAL') || die();
 
 $plugin->version   = 2016042200;
 $plugin->requires  = 2014111000;
-$plugin->component = 'assignsubmission_gradereviews';
+$plugin->component = 'assignsubmission_admincomments';
 $plugin->maturity = MATURITY_STABLE;
 $plugin->release = '1.0 (Build: 2016042200)';

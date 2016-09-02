@@ -15,25 +15,25 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * The assignsubmission_gradereviews gradereview created event.
+ * The assignsubmission_admincomments admincomment deleted event.
  *
- * @package    assignsubmission_gradereviews
+ * @package    assignsubmission_admincomments
  * @copyright  2013 Rajesh Taneja <rajesh@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace assignsubmission_gradereviews\event;
+namespace assignsubmission_admincomments\event;
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * The assignsubmission_gradereviews gradereview created event class.
+ * The assignsubmission_admincomments admincomment deleted event.
  *
- * @package    assignsubmission_gradereviews
+ * @package    assignsubmission_admincomments
  * @since      Moodle 2.7
  * @copyright  2013 Rajesh Taneja <rajesh@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class gradereview_created extends \core\event\gradereview_created {
+class admincomment_deleted extends \core\event\admincomment_deleted {
     /**
      * Get URL related to the action.
      *
@@ -49,7 +49,7 @@ class gradereview_created extends \core\event\gradereview_created {
      * @return string
      */
     public function get_description() {
-        return "The user with id '$this->userid' added the gradereview with id '$this->objectid' to the submission " .
+        return "The user with id '$this->userid' deleted the admincomment with id '$this->objectid' from the submission " .
             "with id '{$this->other['itemid']}' for the assignment with course module id '$this->contextinstanceid'.";
     }
 }

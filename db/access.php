@@ -17,13 +17,13 @@
 /**
  * Capability definitions for this module.
  *
- * @package   assignsubmission_gradereviews
+ * @package   assignsubmission_admincomments
  * @copyright 2012 NetSpot {@link http://www.netspot.com.au}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 $capabilities = array(
-    'moodle/site:canreviewgrade' => array(
+    'moodle/site:canadmincomment' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_USER,
         'archetypes' => array(
@@ -31,7 +31,7 @@ $capabilities = array(
             'editingteacher' => CAP_ALLOW
         )
     ),
-    'moodle/site:caneditreviewgrade' => array(
+    'moodle/site:caneditadmincomment' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_USER,
         'archetypes' => array(

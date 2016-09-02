@@ -17,7 +17,7 @@
 /**
  * Events tests.
  *
- * @package    assignsubmission_gradereviews
+ * @package    assignsubmission_admincomments
  * @category   test
  * @copyright  2013 Rajesh Taneja <rajesh@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -33,17 +33,17 @@ require_once($CFG->dirroot . '/mod/assign/tests/base_test.php');
 /**
  * Events tests class.
  *
- * @package    assignsubmission_gradereviews
+ * @package    assignsubmission_admincomments
  * @category   test
  * @copyright  2013 Rajesh Taneja <rajesh@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class assignsubmission_gradereviews_events_testcase extends mod_assign_base_testcase {
+class assignsubmission_admincomments_events_testcase extends mod_assign_base_testcase {
 
     /**
-     * Test gradereview_created event.
+     * Test admincomment_created event.
      */
-    public function test_gradereview_created() {
+    public function test_admincomment_created() {
         global $CFG;
         require_once($CFG->dirroot . '/comment/lib.php');
 
@@ -53,25 +53,25 @@ class assignsubmission_gradereviews_events_testcase extends mod_assign_base_test
 
         $context = $assign->get_context();
         $options = new stdClass();
-        $options->area = 'submission_gradereviews';
+        $options->area = 'submission_admincomments';
         $options->course = $assign->get_course();
         $options->context = $context;
         $options->itemid = $submission->id;
-        $options->component = 'assignsubmission_gradereviews';
+        $options->component = 'assignsubmission_admincomments';
         $options->showcount = true;
         $options->displaycancel = true;
 
-        $gradereview = new comment($options);
+        $admincomment = new comment($options);
 
         // Triggering and capturing the event.
         $sink = $this->redirectEvents();
-        $gradereview->add('New gradereview');
+        $admincomment->add('New admincomment');
         $events = $sink->get_events();
         $this->assertCount(1, $events);
         $event = reset($events);
 
         // Checking that the event contains the expected values.
-        $this->assertInstanceOf('\assignsubmission_gradereviews\event\gradereview_created', $event);
+        $this->assertInstanceOf('\assignsubmission_admincomments\event\admincomment_created', $event);
         $this->assertEquals($context, $event->get_context());
         $url = new moodle_url('/mod/assign/view.php', array('id' => $assign->get_course_module()->id));
         $this->assertEquals($url, $event->get_url());
@@ -79,9 +79,9 @@ class assignsubmission_gradereviews_events_testcase extends mod_assign_base_test
     }
 
     /**
-     * Test gradereview_deleted event.
+     * Test admincomment_deleted event.
      */
-    public function test_gradereview_deleted() {
+    public function test_admincomment_deleted() {
         global $CFG;
         require_once($CFG->dirroot . '/comment/lib.php');
 
@@ -91,25 +91,25 @@ class assignsubmission_gradereviews_events_testcase extends mod_assign_base_test
 
         $context = $assign->get_context();
         $options = new stdClass();
-        $options->area    = 'submission_gradereviews';
+        $options->area    = 'submission_admincomments';
         $options->course    = $assign->get_course();
         $options->context = $context;
         $options->itemid  = $submission->id;
-        $options->component = 'assignsubmission_gradereviews';
+        $options->component = 'assignsubmission_admincomments';
         $options->showcount = true;
         $options->displaycancel = true;
-        $gradereview = new comment($options);
-        $newgradereview = $gradereview->add('New gradereview 1');
+        $admincomment = new comment($options);
+        $newadmincomment = $admincomment->add('New admincomment 1');
 
         // Triggering and capturing the event.
         $sink = $this->redirectEvents();
-        $gradereview->delete($newgradereview->id);
+        $admincomment->delete($newadmincomment->id);
         $events = $sink->get_events();
         $this->assertCount(1, $events);
         $event = reset($events);
 
         // Checking that the event contains the expected values.
-        $this->assertInstanceOf('\assignsubmission_gradereviews\event\gradereview_deleted', $event);
+        $this->assertInstanceOf('\assignsubmission_admincomments\event\admincomment_deleted', $event);
         $this->assertEquals($context, $event->get_context());
         $url = new moodle_url('/mod/assign/view.php', array('id' => $assign->get_course_module()->id));
         $this->assertEquals($url, $event->get_url());

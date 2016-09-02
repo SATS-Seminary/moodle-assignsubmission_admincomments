@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Post-install code for the submission_gradereviews module.
+ * Post-install code for the submission_admincomments module.
  *
- * @package assignsubmission_gradereviews
+ * @package assignsubmission_admincomments
  * @copyright 2012 NetSpot {@link http://www.netspot.com.au}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -28,18 +28,18 @@ defined('MOODLE_INTERNAL') || die();
 
 /**
  * Code run after the module database tables have been created.
- * Moves the gradereviews plugin to the bottom
+ * Moves the admincomments plugin to the bottom
  * @return bool
  */
-function xmldb_assignsubmission_gradereviews_install() {
+function xmldb_assignsubmission_admincomments_install() {
     global $CFG;
 
     require_once($CFG->dirroot . '/mod/assign/adminlib.php');
     // Set the correct initial order for the plugins.
     $pluginmanager = new assign_plugin_manager('assignsubmission');
 
-    $pluginmanager->move_plugin('gradereviews', 'down');
-    $pluginmanager->move_plugin('gradereviews', 'down');
+    $pluginmanager->move_plugin('admincomments', 'down');
+    $pluginmanager->move_plugin('admincomments', 'down');
 
     return true;
 }

@@ -17,7 +17,7 @@
 /**
  * Upgrade code for install
  *
- * @package   assignsubmission_gradereviews
+ * @package   assignsubmission_admincomments
  * @copyright 2012 NetSpot {@link http://www.netspot.com.au}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -27,7 +27,7 @@
  * @param int $oldversion
  * @return bool
  */
-function xmldb_assignsubmission_gradereviews_upgrade($oldversion) {
+function xmldb_assignsubmission_admincomments_upgrade($oldversion) {
     // Moodle v2.3.0 release upgrade line.
     // Put any upgrade step following this.
 

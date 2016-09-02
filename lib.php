@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This file contains the moodle hooks for the submission gradereviews plugin
+ * This file contains the moodle hooks for the submission admincomments plugin
  *
- * @package   assignsubmission_gradereviews
+ * @package   assignsubmission_admincomments
  * @copyright 2012 NetSpot {@link http://www.netspot.com.au}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -25,20 +25,20 @@ defined('MOODLE_INTERNAL') || die();
 
 /**
  *
- * Callback method for data validation---- required method for AJAXmoodle based gradereview API
+ * Callback method for data validation---- required method for AJAXmoodle based admincomment API
  *
  * @param stdClass $options
  * @return bool
  */
-function assignsubmission_gradereviews_comment_validate(stdClass $options) {
+function assignsubmission_admincomments_comment_validate(stdClass $options) {
     global $USER, $CFG, $DB;
 
-    if ($options->commentarea != 'submission_gradereviews' &&
-            $options->commentarea != 'submission_gradereviews_upgrade') {
+    if ($options->commentarea != 'submission_admincomments' &&
+            $options->commentarea != 'submission_admincomments_upgrade') {
         throw new comment_exception('invalidcommentarea');
     }
     if (!$submission = $DB->get_record('assign_submission', array('id' => $options->itemid))) {
-        throw new comment_exception('invalidgradereviewitemid');
+        throw new comment_exception('invalidadmincommentitemid');
     }
     $context = $options->context;
 
@@ -55,27 +55,27 @@ function assignsubmission_gradereviews_comment_validate(stdClass $options) {
         $canview = $assignment->can_view_group_submission($submission->groupid);
     }
     if (!$canview) {
-        throw new comment_exception('nopermissiontogradereview');
+        throw new comment_exception('nopermissiontoadmincomment');
     }
 
     return true;
 }
 
 /**
- * Permission control method for submission plugin ---- required method for AJAXmoodle based gradereview API
+ * Permission control method for submission plugin ---- required method for AJAXmoodle based admincomment API
  *
  * @param stdClass $options
  * @return array
  */
-function assignsubmission_gradereviews_comment_permissions(stdClass $options) {
+function assignsubmission_admincomments_comment_permissions(stdClass $options) {
     global $USER, $CFG, $DB;
 
-    if ($options->commentarea != 'submission_gradereviews' &&
-            $options->commentarea != 'submission_gradereviews_upgrade') {
+    if ($options->commentarea != 'submission_admincomments' &&
+            $options->commentarea != 'submission_admincomments_upgrade') {
         throw new comment_exception('invalidcommentarea');
     }
     if (!$submission = $DB->get_record('assign_submission', array('id' => $options->itemid))) {
-        throw new comment_exception('invalidgradereviewitemid');
+        throw new comment_exception('invalidadmincommentitemid');
     }
     $context = $options->context;
 
@@ -100,22 +100,22 @@ function assignsubmission_gradereviews_comment_permissions(stdClass $options) {
 }
 
 /**
- * Callback called by gradereview::get_gradereviews() and gradereview::add(). Gives an opportunity to enforce blind-marking.
+ * Callback called by admincomment::get_admincomments() and admincomment::add(). Gives an opportunity to enforce blind-marking.
  *
- * @param array $gradereviews
+ * @param array $admincomments
  * @param stdClass $options
  * @return array
  * @throws comment_exception
  */
-function assignsubmission_gradereviews_comment_display($gradereviews, $options) {
+function assignsubmission_admincomments_comment_display($admincomments, $options) {
     global $CFG, $DB, $USER, $COURSE;
 
-    if ($options->commentarea != 'submission_gradereviews' &&
-        $options->commentarea != 'submission_gradereviews_upgrade') {
+    if ($options->commentarea != 'submission_admincomments' &&
+        $options->commentarea != 'submission_admincomments_upgrade') {
         throw new comment_exception('invalidcommentarea');
     }
     if (!$submission = $DB->get_record('assign_submission', array('id' => $options->itemid))) {
-        throw new comment_exception('invalidgradereviewitemid');
+        throw new comment_exception('invalidadmincommentitemid');
     }
     $context = $options->context;
     $cm = $options->cm;
@@ -128,68 +128,68 @@ function assignsubmission_gradereviews_comment_display($gradereviews, $options) 
         throw new comment_exception('invalidcontext');
     }
 
-    if ($assignment->is_blind_marking() && !empty($gradereviews)) {
-        // Blind marking is being used, may need to map unique anonymous ids to the gradereviews.
+    if ($assignment->is_blind_marking() && !empty($admincomments)) {
+        // Blind marking is being used, may need to map unique anonymous ids to the admincomments.
         $usermappings = array();
         $hiddenuserstr = trim(get_string('hiddenuser', 'assign'));
         $guestuser = guest_user();
 
-        foreach ($gradereviews as $gradereview) {
-            // Anonymize the gradereviews.
-            if (empty($usermappings[$gradereview->userid])) {
-                // The blind-marking information for this gradereviewer has not been generated; do so now.
-                $anonid = $assignment->get_uniqueid_for_user($gradereview->userid);
-                $gradereviewer = new stdClass();
-                $gradereviewer->firstname = $hiddenuserstr;
-                $gradereviewer->lastname = $anonid;
-                $gradereviewer->picture = 0;
-                $gradereviewer->id = $guestuser->id;
-                $gradereviewer->email = $guestuser->email;
-                $gradereviewer->imagealt = $guestuser->imagealt;
+        foreach ($admincomments as $admincomment) {
+            // Anonymize the admincomments.
+            if (empty($usermappings[$admincomment->userid])) {
+                // The blind-marking information for this admincommenter has not been generated; do so now.
+                $anonid = $assignment->get_uniqueid_for_user($admincomment->userid);
+                $admincommenter = new stdClass();
+                $admincommenter->firstname = $hiddenuserstr;
+                $admincommenter->lastname = $anonid;
+                $admincommenter->picture = 0;
+                $admincommenter->id = $guestuser->id;
+                $admincommenter->email = $guestuser->email;
+                $admincommenter->imagealt = $guestuser->imagealt;
 
-                // Temporarily store blind-marking information for use in later gradereviews if necessary.
-                $usermappings[$gradereview->userid]->fullname = fullname($gradereviewer);
-                $usermappings[$gradereview->userid]->avatar = $assignment->get_renderer()->user_picture($gradereviewer,
+                // Temporarily store blind-marking information for use in later admincomments if necessary.
+                $usermappings[$admincomment->userid]->fullname = fullname($admincommenter);
+                $usermappings[$admincomment->userid]->avatar = $assignment->get_renderer()->user_picture($admincommenter,
                         array('size' => 18, 'link' => false));
             }
 
-            // Set blind-marking information for this gradereview.
-            $gradereview->fullname = $usermappings[$gradereview->userid]->fullname;
-            $gradereview->avatar = $usermappings[$gradereview->userid]->avatar;
-            $gradereview->profileurl = null;
+            // Set blind-marking information for this admincomment.
+            $admincomment->fullname = $usermappings[$admincomment->userid]->fullname;
+            $admincomment->avatar = $usermappings[$admincomment->userid]->avatar;
+            $admincomment->profileurl = null;
         }
     }
 
     // Do not display delete option if the user is not the creator.
-    foreach ($gradereviews as &$gradereview) {
-        if ($gradereview->userid != $USER->id) {
+    foreach ($admincomments as &$admincomment) {
+        if ($admincomment->userid != $USER->id) {
             // Check if the user is manager.
-            if (!has_capability('moodle/site:caneditreviewgrade', context_user::instance($USER->id)) &&
-                !has_capability('moodle/site:caneditreviewgrade', context_course::instance($COURSE->id))) {
-                $gradereview->delete = 0;
+            if (!has_capability('moodle/site:caneditadmincomment', context_user::instance($USER->id)) &&
+                !has_capability('moodle/site:caneditadmincomment', context_course::instance($COURSE->id))) {
+                $admincomment->delete = 0;
             }
         }
     }
 
-    return $gradereviews;
+    return $admincomments;
 }
 
 /**
- * Callback to force the userid for all gradereviews to be the userid of the submission and NOT the global $USER->id. This
- * is required by the upgrade code. Note the gradereview area is used to identify upgrades.
+ * Callback to force the userid for all admincomments to be the userid of the submission and NOT the global $USER->id. This
+ * is required by the upgrade code. Note the admincomment area is used to identify upgrades.
  *
- * @param stdClass $gradereview
+ * @param stdClass $admincomment
  * @param stdClass $param
  */
-function assignsubmission_gradereviews_comment_add(stdClass $gradereview, stdClass $param) {
+function assignsubmission_admincomments_comment_add(stdClass $admincomment, stdClass $param) {
 
     global $DB;
-    if ($gradereview->commentarea == 'submission_gradereviews_upgrade') {
-        $submissionid = $gradereview->itemid;
+    if ($admincomment->commentarea == 'submission_admincomments_upgrade') {
+        $submissionid = $admincomment->itemid;
         $submission = $DB->get_record('assign_submission', array('id' => $submissionid));
 
-        $gradereview->userid = $submission->userid;
-        $gradereview->commentarea = 'submission_gradereviews';
+        $admincomment->userid = $submission->userid;
+        $admincomment->commentarea = 'submission_admincomments';
     }
 }
 

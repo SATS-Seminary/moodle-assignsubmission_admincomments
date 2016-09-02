@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This file contains the definition for the library class for online gradereview submission plugin
+ * This file contains the definition for the library class for online admincomment submission plugin
  *
- * @package assignsubmission_gradereviews
+ * @package assignsubmission_admincomments
  * @copyright 2012 NetSpot {@link http://www.netspot.com.au}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -28,27 +28,27 @@
  require_once($CFG->dirroot . '/mod/assign/submissionplugin.php');
 
 /**
- * Library class for gradereview submission plugin extending submission plugin base class
+ * Library class for admincomment submission plugin extending submission plugin base class
  *
- * @package assignsubmission_gradereviews
+ * @package assignsubmission_admincomments
  * @copyright 2012 NetSpot {@link http://www.netspot.com.au}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class assign_submission_gradereviews extends assign_submission_plugin {
+class assign_submission_admincomments extends assign_submission_plugin {
 
     /**
-     * Get the name of the online gradereview submission plugin
+     * Get the name of the online admincomment submission plugin
      * @return string
      */
     public function get_name() {
-        return get_string('pluginname', 'assignsubmission_gradereviews');
+        return get_string('pluginname', 'assignsubmission_admincomments');
     }
 
     /**
      * Display AJAX based comment in the submission status table
      *
      * @param stdClass $submission
-     * @param bool $showviewlink - If the gradereviews are long this is
+     * @param bool $showviewlink - If the admincomments are long this is
      *                             set to true so they can be shown in a separate page
      * @return string
      */
@@ -60,23 +60,23 @@ class assign_submission_gradereviews extends assign_submission_plugin {
         comment::init();
 
         $options = new stdClass();
-        $options->area    = 'submission_gradereviews';
+        $options->area    = 'submission_admincomments';
         $options->course    = $this->assignment->get_course();
         $options->context = $this->assignment->get_context();
         $options->itemid  = $submission->id;
-        $options->component = 'assignsubmission_gradereviews';
+        $options->component = 'assignsubmission_admincomments';
         $options->showcount = true;
         $options->displaycancel = true;
 
-        $gradereview = new comment($options);
-        $gradereview->set_view_permission(true);
+        $admincomment = new comment($options);
+        $admincomment->set_view_permission(true);
 
-        $o = $this->assignment->get_renderer()->container($gradereview->output(true), 'commentscontainer');
+        $o = $this->assignment->get_renderer()->container($admincomment->output(true), 'commentscontainer');
         return $o;
     }
 
     /**
-     * Always return true because the submission gradereviews are not part of the submission form.
+     * Always return true because the submission admincomments are not part of the submission form.
      *
      * @param stdClass $submission
      * @return bool
@@ -141,26 +141,26 @@ class assign_submission_gradereviews extends assign_submission_plugin {
             comment::init();
 
             $options = new stdClass();
-            $options->area = 'submission_gradereviews_upgrade';
+            $options->area = 'submission_admincomments_upgrade';
             $options->course = $this->assignment->get_course();
             $options->context = $this->assignment->get_context();
             $options->itemid = $submission->id;
-            $options->component = 'assignsubmission_gradereviews';
+            $options->component = 'assignsubmission_admincomments';
             $options->showcount = true;
             $options->displaycancel = true;
 
-            $gradereview = new comment($options);
-            $gradereview->add($oldsubmission->data1);
-            $gradereview->set_view_permission(true);
+            $admincomment = new comment($options);
+            $admincomment->add($oldsubmission->data1);
+            $admincomment->set_view_permission(true);
 
-            return $gradereview->output(true);
+            return $admincomment->output(true);
         }
 
         return true;
     }
 
     /**
-     * The submission gradereviews plugin has no submission component so should not be counted
+     * The submission admincomments plugin has no submission component so should not be counted
      * when determining whether to show the edit submission link.
      * @return boolean
      */
@@ -169,7 +169,7 @@ class assign_submission_gradereviews extends assign_submission_plugin {
     }
 
     /**
-     * Automatically enable or disable this plugin based on "$CFG->gradereviewsenabled"
+     * Automatically enable or disable this plugin based on "$CFG->admincommentsenabled"
      *
      * @return bool
      */
@@ -177,8 +177,8 @@ class assign_submission_gradereviews extends assign_submission_plugin {
         global $CFG, $USER, $COURSE;
 
         // If student they do not show it.
-        if (has_capability('moodle/site:canreviewgrade', context_user::instance($USER->id))
-        || has_capability('moodle/site:canreviewgrade', context_course::instance($COURSE->id))) {
+        if (has_capability('moodle/site:canadmincomment', context_user::instance($USER->id))
+        || has_capability('moodle/site:canadmincomment', context_course::instance($COURSE->id))) {
             return (!empty($CFG->usecomments));
         }
 

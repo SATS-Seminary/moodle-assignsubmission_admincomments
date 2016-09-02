@@ -1,4 +1,4 @@
-# moodle-assignsubmission_gradereviews
+# moodle-assignsubmission_admincomments
 
 This plugin is a copy of the core submission comment plugin excepts than you have permissions that allow to restrict people who can:
 * create and see the comments
@@ -9,5 +9,5 @@ For example the grade reviewer may have detected plagiarism or think that the gr
 The students should not be allowed to see these comments.
 
 ## Install
-* add the content in the foler: mod/assign/submission/gradereviews
+* add the content in the foler: mod/assign/submission/admincomments
 * optional: in the Moodle admin tweak the permissions. The permission are listed in db/access.php.  

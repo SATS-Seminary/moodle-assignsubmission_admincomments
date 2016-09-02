@@ -15,16 +15,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Strings for component 'submission_gradereviews', language 'en'
+ * Strings for component 'submission_admincomments', language 'en'
  *
- * @package   assignsubmission_gradereviews
+ * @package   assignsubmission_admincomments
  * @copyright 2012 NetSpot {@link http://www.netspot.com.au}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 $string['default'] = 'Enabled by default';
 $string['default_help'] = 'If set, this submission method will be enabled by default for all new assignments.';
-$string['enabled'] = 'Submission gradereviews';
-$string['enabled_help'] = 'If enabled, students can leave gradereviews on their own submission. This can be used to let students alert the marker about which files the master file is in cases of inter-linked files, for instance.
+$string['enabled'] = 'Submission admincomments';
+$string['enabled_help'] = 'If enabled, administrative staff can comment on any actions performed on an assignment. Only roles with the moodle/site:canadmincomment permission can view and add comments.
 ';
-$string['pluginname'] = 'Grade reviews';
+$string['pluginname'] = 'Administrative Comments';
