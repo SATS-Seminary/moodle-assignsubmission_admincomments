@@ -28,3 +28,5 @@ $string['enabled'] = 'Submission admincomments';
 $string['enabled_help'] = 'If enabled, administrative staff can comment on any actions performed on an assignment. Only roles with the moodle/site:canadmincomment permission can view and add comments.
 ';
 $string['pluginname'] = 'Administrative Comments';
+$string['site:canadmincomment'] = 'Post an administrative comment';
+$string['site:caneditadmincomment'] = 'Edit other users administrative comments';
