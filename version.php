@@ -24,7 +24,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2016090200;
+$plugin->version   = 2016092200;
 $plugin->requires  = 2014111000;
 $plugin->component = 'assignsubmission_admincomments';
 $plugin->maturity = MATURITY_STABLE;
